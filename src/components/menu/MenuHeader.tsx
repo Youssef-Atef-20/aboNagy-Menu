@@ -8,7 +8,7 @@ interface MenuHeaderProps {
 
 export function MenuHeader({ restaurantName, theme, onToggleTheme }: MenuHeaderProps) {
   return (
-    <header className="menu-header" data-aos="fade-down" data-aos-duration="600">
+    <header className="menu-header">
       <div className="header-inner">
         <div className="header-brand">
           <div className="header-logo" aria-hidden="true">أ</div>

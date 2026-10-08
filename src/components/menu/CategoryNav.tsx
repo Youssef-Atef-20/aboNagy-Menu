@@ -10,9 +10,14 @@ interface CategoryNavProps {
 export function CategoryNav({ categories, activeId, onSelect }: CategoryNavProps) {
   const navRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef<HTMLButtonElement>(null);
+  const isFirstMount = useRef(true);
 
-  // Scroll active pill into view when it changes
+  // Scroll active pill into view when it changes (skip on initial mount to avoid forced reflow)
   useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
     activeRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   }, [activeId]);
 

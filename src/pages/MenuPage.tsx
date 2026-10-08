@@ -22,12 +22,18 @@ export function MenuPage() {
     AOS.init({ once: true, duration: 500, easing: 'ease-out-cubic', offset: 60 });
   }, []);
 
-  // Set active category on mount
+  // Refresh AOS after menu content is mounted and rendered to the DOM
   useEffect(() => {
-    if (categories.length > 0 && activeCategoryId === null) {
-      setActiveCategoryId(categories[0].id);
+    if (!loading && categories.length > 0) {
+      const handle = requestAnimationFrame(() => {
+        AOS.refresh();
+      });
+      return () => cancelAnimationFrame(handle);
     }
-  }, [categories, activeCategoryId]);
+  }, [loading, categories]);
+
+  // Derive active category (defaults to first category without triggering cascading re-render)
+  const effectiveActiveId = activeCategoryId ?? (categories[0]?.id ?? null);
 
   // Track active category via IntersectionObserver
   useEffect(() => {
@@ -85,7 +91,7 @@ export function MenuPage() {
 
       <CategoryNav
         categories={categories}
-        activeId={activeCategoryId}
+        activeId={effectiveActiveId}
         onSelect={scrollToCategory}
       />
 
